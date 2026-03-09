@@ -1,0 +1,229 @@
+---
+title: "Types de données / Data Types"
+description: "Référence complète des types TypeScript utilisés dans VesselIQ"
+---
+
+## Présentation / Overview
+
+VesselIQ utilise un système de types TypeScript strict pour garantir la cohérence des données à travers l'application. Cette page documente les types principaux définis dans `types.ts` et le dossier `types/`.
+
+*VesselIQ uses a strict TypeScript type system to ensure data consistency across the application. This page documents the main types defined in `types.ts` and the `types/` folder.*
+
+---
+
+## Types principaux / Main Types
+
+### Supplier (Fournisseur)
+
+```typescript
+interface Supplier {
+    id: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    fax?: string;
+    website?: string;
+    streetAddress?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
+    type?: string;           // OEM, Distributeur, Agent...
+    categorie?: string;      // Marine, Industriel...
+    marque?: string;         // Marques représentées
+    specialites?: string[];  // Liste spécialités
+    certifications?: string[];
+    contact?: { name?: string; email?: string; phone?: string };
+    status?: 'actif' | 'inactif';
+    rating?: number;         // Note 1-5
+    delaiLivraison?: string;
+    conditionsPaiement?: string;
+    devise?: string;
+    notes?: string;
+    notesIA?: string;        // Notes enrichissement IA
+}
+```
+
+### Consultation
+
+```typescript
+interface Consultation {
+    id: string;
+    reference: string;       // Format: {NNN}CN-{AA}-R{X}
+    objet: string;
+    designation: string;
+    navire?: string;
+    ship_id?: string;        // UUID vers table ships
+    client?: string;
+    date_consultation: string;
+    date_relance?: string;
+    date_limite_depot?: string;
+    lifecycleStatus?: ConsultationLifecycleStatus;
+    supplierResponses: SupplierResponse[];
+    masterPDR?: ComparisonItem[];
+    attachments?: Attachment[];
+}
+
+type ConsultationLifecycleStatus =
+    'En cours' | 'Relance' | 'Avec Offres' |
+    'Infructueuse' | 'Annulée' | 'Clôturée';
+```
+
+### PurchaseOrder (Bon de commande)
+
+```typescript
+interface PurchaseOrder {
+    id: string;
+    reference: string;
+    consultationId?: string;
+    supplierId: string;
+    status: POStatus;
+    totalAmount?: number;
+    currency?: string;
+    paymentTerms?: string;
+    incoterm?: string;
+    date_prevue_livraison?: string;
+    date_reception_reelle?: string;
+    conformite?: 'conforme' | 'non_conforme' | 'partiel';
+    details_non_conformite?: NonConformiteDetail[];
+}
+
+type POStatus = 'draft' | 'validation_pending' | 'sent' |
+    'partial_receipt' | 'received' | 'cancelled';
+```
+
+### SupplierResponse (Réponse fournisseur)
+
+```typescript
+interface SupplierResponse {
+    supplierId: string;
+    status: 'En attente' | 'Offre reçue' | 'Accepté' |
+        'Refusé' | 'Éliminé' | 'Négociation' | "Pas d'offre";
+    offerAmount?: number;
+    offerCurrency?: string;
+    deliveryTime?: string;
+    incoterm?: string;
+    extractedData?: {
+        items: ExtractedLineItem[];
+        logistics: LogisticsInfo;
+    };
+    semanticMatches?: ItemMatch[];
+    complianceScore?: number;
+    risk_level?: 'low' | 'medium' | 'high' | 'critical';
+}
+```
+
+### ShipData (Navire)
+
+```typescript
+interface ShipData {
+    id: string;
+    name: string;
+    imo: string;
+    port: string;
+    type: string;
+    status: string;
+    flag?: string;
+    yearBuilt?: number;
+    specifications?: {
+        power?: number;
+        tonnage?: number;
+        length?: number;
+        width?: number;
+        draft?: number;
+        crew?: number;
+    };
+    maintenance?: {
+        lastDate?: string;
+        nextDate?: string;
+        interval?: number;
+        alerts?: boolean;
+    };
+}
+```
+
+---
+
+## Types de comparaison / Comparison Types
+
+### MatchType
+
+```typescript
+type MatchType =
+    'EXACT' | 'EQUIVALENT' | 'COMPATIBLE' |
+    'UPGRADE' | 'DOWNGRADE' | 'SUBSTITUTE' |
+    'KIT_COMPONENT' | 'KIT_CONTAINS' |
+    'PARTIAL' | 'NO_MATCH' | 'MANUAL' |
+    'IMPLICIT' | 'SEMANTIC' | 'MISSING' | 'KIT';
+```
+
+### ScoringResult
+
+```typescript
+interface ScoreDetails {
+    conformiteScore: number;
+    caracteristiquesScore: number;
+    delaiLivraisonScore: number;
+    certificatScore: number;
+    qualiteFournisseurScore: number;
+    historiqueScore: number;
+    noteTechnique: number;
+    montantScore: number;
+    paiementScore: number;
+    validiteScore: number;
+    noteFinanciere: number;
+    noteGlobale: number;
+    rank?: number;
+}
+```
+
+### DiscrepancyType
+
+```typescript
+type DiscrepancyType =
+    'ARTICLE_MANQUANT' | 'ARTICLE_SUPPLEMENTAIRE' |
+    'QUANTITE_DIFFERENTE' | 'REFERENCE_MODIFIEE' |
+    'PAIEMENT_INTERDIT' | 'LOGISTIQUE_CRITIQUE' |
+    'VALIDITE_COURTE' | 'BUNDLING' |
+    'AMBIGUITY' | 'CRITICAL_MISSING';
+```
+
+---
+
+## Types de suivi / Tracking Types
+
+### DossierState
+
+```typescript
+interface DossierState {
+    consultationId: string;
+    currentStepId: string;
+    lastUpdated: string;
+    steps: WorkflowStep[];
+    globalStatus: 'on_track' | 'delayed' | 'critical' | 'completed';
+    completionPercentage: number;
+}
+
+interface WorkflowStep {
+    id: string;
+    label: string;
+    status: 'pending' | 'in_progress' | 'completed' | 'error' | 'skipped';
+    date?: string;
+    notes?: string;
+    isAutomated: boolean;
+    subSteps?: WorkflowStep[];
+}
+```
+
+---
+
+## Fichiers de types / Type Files
+
+| Fichier | Contenu |
+|---------|---------|
+| `types.ts` | Types principaux (Supplier, Consultation, PO, Matching) |
+| `types/lc.ts` | Types Lettres de Crédit |
+| `types/lc-status.ts` | Statuts et workflows LC |
+| `types/kpi.ts` | Types KPI et métriques |
+| `types/tracking.ts` | Types suivi logistique |
+| `types/learning.ts` | Types apprentissage IA |
+| `types/database.types.ts` | Types générés Supabase |

@@ -1,68 +1,75 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "VesselIQ Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0A4DA6",
+    "light": "#3B82F6",
+    "dark": "#1E3A5F"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/favicon.png",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Guide Utilisateur",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Démarrage",
             "pages": [
               "index",
-              "quickstart",
-              "development"
+              "quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Modules Principaux",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "guide/dashboard",
+              "guide/consultations",
+              "guide/offer-comparison",
+              "guide/dossier-tracking"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Achats & Finances",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "guide/purchase-orders",
+              "guide/letters-of-credit"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Gestion",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "guide/supplier-management",
+              "guide/ship-management",
+              "guide/email-messaging",
+              "guide/kpi-dashboard",
+              "guide/data-management"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Fonctionnalités IA",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Intelligence Artificielle",
             "pages": [
-              "api-reference/introduction"
+              "ai/ai-comparator",
+              "ai/ai-supplier-search",
+              "ai/ai-chatbot"
             ]
-          },
+          }
+        ]
+      },
+      {
+        "tab": "Architecture",
+        "groups": [
           {
-            "group": "Endpoint examples",
+            "group": "Technique",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "architecture/tech-stack",
+              "architecture/edge-functions",
+              "architecture/data-types"
             ]
           }
         ]
@@ -71,52 +78,38 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Support",
+          "href": "mailto:support@vesseliq.app",
+          "icon": "envelope"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Demander l'accès",
+          "href": "mailto:contact@vesseliq.app",
+          "icon": "ship"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/logo.jpg",
+    "dark": "/logo/logo.jpg"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@vesseliq.app"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Demander l'accès",
+      "href": "mailto:contact@vesseliq.app"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "linkedin": "https://www.linkedin.com"
     }
   }
 }

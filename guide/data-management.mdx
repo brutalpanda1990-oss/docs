@@ -1,0 +1,62 @@
+---
+title: "Gestion des Données / Data Management"
+icon: "database"
+description: "Import, export, sauvegarde et administration des données de l'application"
+---
+
+## Présentation / Overview
+
+Le module **Gestion des Données** centralise les opérations d'administration : import/export de données, gestion des templates documentaires, et opérations de maintenance de la base de données.
+
+*The **Data Management** module centralizes administration operations: data import/export, document template management, and database maintenance.*
+
+---
+
+## Fonctionnalités / Features
+
+### 1. Import/Export Excel
+
+<AccordionGroup>
+  <Accordion title="Import fournisseurs / Supplier Import">
+    Importez des fournisseurs depuis un fichier Excel avec détection des doublons et validation des données.
+  </Accordion>
+  <Accordion title="Export complet / Full Export">
+    Exportez l'ensemble des données (consultations, fournisseurs, BC) vers un fichier Excel multi-onglets.
+  </Accordion>
+  <Accordion title="Export consultations / Consultation Export">
+    Exportez les consultations filtrées avec toutes les réponses fournisseurs et montants.
+  </Accordion>
+</AccordionGroup>
+
+### 2. Templates DOCX
+
+Gérez les modèles de documents Word :
+- **BC (Bon de Commande)** — template pour bons de commande
+- **PDR (Pièces de Rechange)** — template format pièces
+- **Service** — template prestation de service
+
+Chaque template utilise des **variables** automatiquement remplacées lors de la génération.
+
+### 3. Sauvegarde / Backup
+
+- Export JSON complet de la base locale (IndexedDB)
+- Synchronisation avec Supabase cloud
+- Restauration depuis un fichier de sauvegarde
+
+### 4. Réinitialisation / Reset
+
+<Warning>
+  La réinitialisation supprime toutes les données locales. Cette action est irréversible. Assurez-vous d'avoir une sauvegarde.
+  
+  *Reset deletes all local data. This action is irreversible. Make sure you have a backup.*
+</Warning>
+
+---
+
+## Avantages / Benefits
+
+<Tip>
+  Les exports Excel permettent le **reporting externe** et l'intégration avec d'autres systèmes ERP/finance de l'entreprise.
+  
+  *Excel exports enable **external reporting** and integration with other company ERP/finance systems.*
+</Tip>
