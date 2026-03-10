@@ -79,12 +79,12 @@
       "anchors": [
         {
           "anchor": "Support",
-          "href": "mailto:support@vesseliq.app",
+          "href": "mailto:debbouzamine@gmail.com",
           "icon": "envelope"
         },
         {
           "anchor": "Demander l'accès",
-          "href": "mailto:contact@vesseliq.app",
+          "href": "mailto:debbouzamine@gmail.com",
           "icon": "ship"
         }
       ]
@@ -98,13 +98,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@vesseliq.app"
+        "href": "mailto:debbouzamine@gmail.com"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Demander l'accès",
-      "href": "mailto:contact@vesseliq.app"
+      "href": "mailto:debbouzamine@gmail.com"
     }
   },
   "footer": {
