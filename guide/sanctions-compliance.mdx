@@ -1,0 +1,75 @@
+---
+title: Conformité & Sanctions
+description: Vérification des sanctions internationales et conformité UCP 600 dans VesselIQ.
+icon: shield-check
+---
+
+# Conformité & Sanctions
+
+VesselIQ intègre des outils de conformité avancés pour sécuriser vos opérations d'approvisionnement naval face aux risques légaux et financiers internationaux.
+
+## Vérification des sanctions
+
+Le service `sanctionsService.ts` permet de vérifier automatiquement si un fournisseur ou une entité est soumis à des **sanctions internationales** (OFAC, ONU, UE).
+
+### Comment ça fonctionne ?
+
+1. Lors de l'ajout ou de la mise à jour d'un fournisseur, VesselIQ lance une vérification automatique
+2. Le nom, pays et identifiants de l'entreprise sont contrôlés
+3. Un **indicateur visuel** signale le statut de conformité dans la fiche fournisseur
+
+<Warning>
+  Tout fournisseur marqué comme sanctionné est automatiquement bloqué dans le processus de consultation.
+</Warning>
+
+### Niveaux de risque
+
+| Statut | Signification |
+|---|---|
+| ✅ Conforme | Aucune sanction détectée |
+| ⚠️ À vérifier | Correspondance partielle — vérification manuelle requise |
+| ❌ Sanctioné | Fournisseur bloqué — transactions interdites |
+
+## Conformité UCP 600
+
+Le service `ucp600Service.ts` assure que les **Lettres de Crédit** émises respectent les règles et usances uniformes relatives aux crédits documentaires (UCP 600) publiées par la Chambre de Commerce Internationale.
+
+### Vérifications automatiques UCP 600
+
+<CardGroup cols={2}>
+  <Card title="Délais documentaires" icon="clock">
+    Contrôle que les délais de présentation des documents respectent l'article 14 UCP 600 (5 jours bancaires max)
+  </Card>
+  <Card title="Conformité des documents" icon="file-check">
+    Vérifie que les documents requis (facture, BL, certificats) correspondent aux conditions de la LC
+  </Card>
+  <Card title="Montants et devises" icon="dollar-sign">
+    Valide les tolérances de montant autorisées (+/- 5% selon UCP 600 Art. 30)
+  </Card>
+  <Card title="Dates d'expiration" icon="calendar-xmark">
+    Alerte sur l'approche de la date limite de validité de la LC
+  </Card>
+</CardGroup>
+
+## Messages SWIFT
+
+Le service `swiftService.ts` gère la génération et la lecture des **messages SWIFT** liés aux lettres de crédit :
+
+- **MT700** : Émission de lettre de crédit
+- **MT707** : Modification de lettre de crédit
+- **MT750** : Avis de discordance
+- **MT760** : Garantie bancaire
+
+<Note>
+  Les messages SWIFT sont générés automatiquement lorsque vous validez ou modifiez une LC dans VesselIQ.
+</Note>
+
+## Exposition financière
+
+Le service `exposureService.ts` calcule votre **exposition financière globale** en temps réel :
+
+- Cumul des engagements sur les LC ouvertes
+- Exposition par fournisseur et par devise
+- Alertes si l'exposition dépasse les seuils paramétrés
+
+Ces données sont visibles dans le **tableau de bord KPI** sous l'onglet Finances.
