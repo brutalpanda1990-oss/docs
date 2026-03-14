@@ -44,13 +44,16 @@
             "group": "Achats & Finances",
             "pages": [
               "guide/purchase-orders",
-              "guide/letters-of-credit"
+              "guide/letters-of-credit",
+              "guide/payments-exchange",
+              "guide/sanctions-compliance"
             ]
           },
           {
             "group": "Gestion",
             "pages": [
               "guide/supplier-management",
+              "guide/scoring-suppliers",
               "guide/ship-management",
               "guide/email-messaging",
               "guide/kpi-dashboard",
