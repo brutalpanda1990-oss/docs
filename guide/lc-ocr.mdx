@@ -1,0 +1,76 @@
+---
+title: OCR des Lettres de Crédit
+description: Lecture automatique et extraction des données de lettres de crédit par reconnaissance optique de caractères (OCR) dans VesselIQ.
+icon: scan
+---
+
+# OCR des Lettres de Crédit
+
+VesselIQ intègre un moteur OCR intelligent (`lcOCRService.ts`) qui permet de **lire et extraire automatiquement** les informations d'une lettre de crédit à partir d'un document scan ou PDF reçu de votre banque.
+
+## À quoi ça sert ?
+
+Lors de la réception d'une LC émise par une banque étrangère, le document arrive souvent en format **scan PDF** ou **image**. Plutôt que de ressaisir manuellement toutes les informations, l'OCR analyse le document et pré-remplit automatiquement la fiche LC dans VesselIQ.
+
+## Importer une LC par OCR
+
+1. Allez dans **Lettres de Crédit** → **Nouvelle LC**
+2. Cliquez sur **Importer depuis un document**
+3. Déposez le fichier PDF ou image (JPG, PNG) de la LC reçue
+4. L'OCR analyse le document automatiquement
+5. Vérifiez et corrigez les champs pré-remplis si nécessaire
+6. Validez pour créer la LC
+
+<Note>
+  La précision de l'OCR dépend de la qualité du scan. Un document de bonne résolution (min. 300 DPI) donne les meilleurs résultats.
+</Note>
+
+## Champs extraits automatiquement
+
+| Champ | Source dans le document |
+|---|---|
+| Numéro de LC | Référence bancaire en-tête |
+| Banque émettrice | Nom et adresse de la banque |
+| Bénéficiaire | Nom du fournisseur |
+| Montant | Valeur et devise |
+| Date d'expiration | Date limite de validité |
+| Port d'embarquement | Lieu de chargement |
+| Port de destination | Lieu de livraison |
+| Description des marchandises | Contenu de la commande |
+| Documents requis | Liste des justificatifs demandés |
+| Conditions spéciales | Clauses particulières |
+
+## Validation assistée par IA
+
+Après l'extraction OCR, l'IA de VesselIQ **vérifie la cohérence** des données extraites :
+
+- Compare le montant LC avec les bons de commande associés
+- Vérifie que la date d'expiration est suffisante pour la livraison
+- Signale les clauses inhabituelles ou potentiellement problématiques
+- Contrôle la conformité avec les règles UCP 600
+
+<Warning>
+  L'OCR est un outil d'aide à la saisie. Toujours vérifier les informations extraites avant de valider la LC, notamment les montants et dates.
+</Warning>
+
+## Formats de documents supportés
+
+| Format | Supporté | Notes |
+|---|---|---|
+| PDF texte | ✅ Oui | Meilleure précision |
+| PDF scan | ✅ Oui | Qualité dépendante du scan |
+| JPG / PNG | ✅ Oui | Min. 300 DPI recommandé |
+| TIFF | ✅ Oui | Très bonne qualité |
+| DOCX | ⚠️ Partiel | Conversion automatique avant OCR |
+
+## Cas d'usage typique
+
+```
+Banque étrangère → envoie LC par email (PDF scan)
+         ↓
+VesselIQ OCR → extrait toutes les données
+         ↓
+Utilisateur → vérifie et valide en 2 clics
+         ↓
+LC créée dans VesselIQ avec suivi automatique
+```
