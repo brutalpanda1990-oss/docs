@@ -64,3 +64,75 @@ Chaque template utilise des **variables** automatiquement remplacées lors de la
   
   *Excel exports enable **external reporting** and integration with other company ERP/finance systems.*
 </Tip>
+
+---
+
+## Variables de Templates DOCX / DOCX Template Variables
+
+Chaque template utilise des variables entre accolades doubles qui sont automatiquement remplacées lors de la génération du document.
+
+*Each template uses double-brace variables that are automatically replaced when the document is generated.*
+
+### Template BC (Bon de Commande)
+
+| Variable | Description | Exemple |
+|----------|-------------|--------|
+| `{{po_number}}` | Numéro BC | BC-2024-001 |
+| `{{supplier_name}}` | Nom fournisseur | Marine Parts Co. |
+| `{{vessel_name}}` | Nom du navire | MV Atlantic Star |
+| `{{total_amount}}` | Montant total | 15,000.00 |
+| `{{currency}}` | Devise | USD |
+| `{{delivery_date}}` | Date livraison | 15/03/2024 |
+| `{{incoterm}}` | Incoterm | FOB |
+| `{{created_date}}` | Date création | 01/03/2024 |
+| `{{items_table}}` | Tableau des lignes | (généré automatiquement) |
+
+### Template PDR (Pièces de Rechange)
+
+| Variable | Description |
+|----------|-------------|
+| `{{part_number}}` | Référence pièce |
+| `{{description}}` | Désignation |
+| `{{quantity}}` | Quantité |
+| `{{unit_price}}` | Prix unitaire |
+| `{{manufacturer}}` | Fabricant |
+
+---
+
+## Format d'import Excel / Excel Import Format
+
+Le fichier Excel d'import fournisseurs doit respecter le format suivant :
+
+| Colonne Excel | Champ Supabase | Obligatoire |
+|---------------|----------------|-------------|
+| A - Nom | `name` | Oui |
+| B - Email | `email` | Oui |
+| C - Téléphone | `phone` | Non |
+| D - Pays | `country` | Non |
+| E - Catégories | `categories` | Non |
+| F - Site Web | `website` | Non |
+
+<Info>
+Les doublons sont détectés par l'**email**. Si un fournisseur avec le même email existe, il est mis à jour plutôt que dupliqué.
+
+*Duplicates are detected by **email**. If a supplier with the same email exists, it is updated rather than duplicated.*
+</Info>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="L'import Excel échoue">
+    Vérifiez que le fichier est au format `.xlsx` (pas `.xls` ou `.csv`). La première ligne doit être une ligne d'en-tête. Les colonnes doivent respecter l'ordre défini ci-dessus.
+  </Accordion>
+  <Accordion title="Le template DOCX génère des erreurs de variables">
+    Assurez-vous que les variables dans votre template utilisent la syntaxe `{{variable}}` avec exactement deux accolades. Les espaces à l'intérieur (`{{ variable }}`) peuvent causer des erreurs avec Docxtemplater.
+  </Accordion>
+  <Accordion title="La sauvegarde ne se synchronise pas avec Supabase">
+    Vérifiez votre connexion internet et que `VITE_SUPABASE_URL` est correctement configuré. Si la synchronisation échoue, téléchargez d'abord la sauvegarde JSON locale comme copie de sécurité.
+  </Accordion>
+  <Accordion title="L'export Excel est incomplet">
+    L'export nécessite que les données soient chargées en mémoire. Naviguez d'abord dans les modules concernés (Consultations, Fournisseurs, BC) avant de lancer un export complet.
+  </Accordion>
+</AccordionGroup>
