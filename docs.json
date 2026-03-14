@@ -8,6 +8,16 @@
     "dark": "#1E3A5F"
   },
   "favicon": "/images/favicon.png",
+  "metadata": {
+    "og:title": "VesselIQ Documentation — Plateforme d'intelligence maritime",
+    "og:description": "Documentation officielle de VesselIQ : gestion des approvisionnements navires, IA Gemini, lettres de crédit, KPI et suivi logistique.",
+    "og:site_name": "VesselIQ Docs",
+    "twitter:card": "summary_large_image"
+  },
+  "feedback": {
+    "thumbsRating": true,
+    "suggestEdit": false
+  },
   "navigation": {
     "tabs": [
       {
@@ -17,7 +27,8 @@
             "group": "Démarrage",
             "pages": [
               "index",
-              "quickstart"
+              "quickstart",
+              "guide/faq"
             ]
           },
           {
@@ -117,7 +128,7 @@
   },
   "footer": {
     "socials": {
-            "linkedin": "https://www.linkedin.com/in/debbouzamine/"
+      "linkedin": "https://www.linkedin.com/in/debbouzamine/"
     }
   }
 }
