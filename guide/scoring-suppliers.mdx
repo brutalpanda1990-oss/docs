@@ -1,0 +1,75 @@
+---
+title: Scoring des Fournisseurs
+description: Système de notation et d'évaluation automatique des fournisseurs dans VesselIQ.
+icon: star
+---
+
+# Scoring des Fournisseurs
+
+VesselIQ intègre un moteur de scoring intelligent qui évalue et note automatiquement chaque fournisseur en fonction de ses performances historiques, ses offres, et son niveau de conformité.
+
+## Comment fonctionne le scoring ?
+
+Le scoring est calculé par deux services complémentaires :
+
+- **`scoringEngine.ts`** : Moteur de base qui calcule le score brut selon des critères pondérés.
+- **`scoringService.ts`** : Couche d'orchestration qui agrège les données et expose les scores à l'interface.
+
+### Critères de notation
+
+| Critère | Poids | Description |
+|---|---|---|
+| Prix compétitif | 30% | Comparaison avec la moyenne du marché |
+| Délais de livraison | 25% | Respect des délais annoncés |
+| Qualité des offres | 20% | Complétude et conformité des réponses |
+| Historique fournisseur | 15% | Nombre de consultations passées avec succès |
+| Conformité documents | 10% | Validité des certificats et documents fournis |
+
+## Score global
+
+Chaque fournisseur reçoit un **score de 0 à 100** :
+
+<CardGroup cols={3}>
+  <Card title="🟢 Excellent" icon="circle-check">
+    Score ≥ 80 — Fournisseur prioritaire recommandé par l'IA
+  </Card>
+  <Card title="🟡 Acceptable" icon="circle-exclamation">
+    Score 50–79 — Fournisseur à considérer avec précaution
+  </Card>
+  <Card title="🔴 À éviter" icon="circle-xmark">
+    Score < 50 — Historique insuffisant ou performances faibles
+  </Card>
+</CardGroup>
+
+## Matching intelligent
+
+Le scoring est couplé au système de **matching fournisseur** (`matchingService.ts` et `enhancedMatchingService.ts`) qui associe automatiquement les meilleures offres aux besoins d'une consultation.
+
+### Fonctionnement du matching
+
+1. VesselIQ analyse les articles de la consultation (description, quantité, unité)
+2. Il interroge la base de données des fournisseurs actifs
+3. Le moteur de matching compare les capacités fournisseurs aux besoins
+4. Les fournisseurs les mieux scorés sont **pré-sélectionnés** et suggérés
+
+## Apprentissage continu
+
+Grâce au service `learningService.ts`, VesselIQ **améliore ses recommandations** au fil du temps :
+
+- Les résultats de chaque consultation alimentent le modèle
+- Les fournisseurs qui livrent à temps voient leur score augmenter
+- Les fournisseurs avec des retards ou des offres incomplètes sont pénalisés
+
+<Note>
+  Le scoring est recalculé automatiquement après chaque consultation clôturée.
+</Note>
+
+## Voir le score d'un fournisseur
+
+1. Accédez à **Gestion des Fournisseurs**
+2. Cliquez sur un fournisseur dans la liste
+3. L'onglet **Performance** affiche son score détaillé avec l'historique
+
+## Exporter les scores
+
+Les scores fournisseurs peuvent être exportés en **Excel** via le module KPI ou directement depuis la liste des fournisseurs → bouton **Exporter**.
