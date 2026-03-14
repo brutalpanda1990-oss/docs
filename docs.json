@@ -45,6 +45,7 @@
             "pages": [
               "guide/purchase-orders",
               "guide/letters-of-credit",
+              "guide/lc-ocr",
               "guide/payments-exchange",
               "guide/sanctions-compliance"
             ]
@@ -57,7 +58,8 @@
               "guide/ship-management",
               "guide/email-messaging",
               "guide/kpi-dashboard",
-              "guide/data-management"
+              "guide/data-management",
+              "guide/document-templates"
             ]
           }
         ]
