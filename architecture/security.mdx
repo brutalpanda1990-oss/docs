@@ -1,0 +1,141 @@
+---
+title: "Sécurité / Security"
+icon: "shield-check"
+description: "Architecture de sécurité de VesselIQ : RLS, JWT, authentification et protection des données"
+---
+
+## Vue d'ensemble / Overview
+
+VesselIQ applique une sécurité multicouche basée sur les politiques Supabase (**RLS**), l'authentification **JWT**, et le chiffrement des communications. Toutes les données sensibles sont protégées côté serveur indépendamment du client.
+
+*VesselIQ applies multi-layer security based on Supabase policies (**RLS**), **JWT** authentication, and encrypted communications. All sensitive data is protected server-side independently of the client.*
+
+---
+
+## Row Level Security (RLS)
+
+Chaque table Supabase est protégée par des **politiques RLS** qui garantissent qu'un utilisateur ne peut accéder qu'à ses propres données.
+
+*Each Supabase table is protected by **RLS policies** ensuring a user can only access their own data.*
+
+<Info>
+Les politiques RLS sont activées via le script `set_security.sql` à exécuter lors de l'initialisation.
+
+*RLS policies are activated via the `set_security.sql` script to run during initialization.*
+</Info>
+
+### Politiques appliquées / Applied Policies
+
+| Table | Lecture | Écriture | Suppression |
+|-------|---------|----------|-------------|
+| `consultations` | Propriétaire uniquement | Propriétaire | Propriétaire |
+| `suppliers` | Tous les utilisateurs | Propriétaire | Admin |
+| `purchase_orders` | Propriétaire | Propriétaire | Admin |
+| `vessels` | Tous les utilisateurs | Admin | Admin |
+| `dossiers` | Propriétaire | Propriétaire | Propriétaire |
+| `letters_of_credit` | Propriétaire | Propriétaire | Admin |
+
+---
+
+## Authentification JWT / JWT Authentication
+
+VesselIQ utilise **Supabase Auth** avec des tokens JWT pour sécuriser chaque requête API.
+
+*VesselIQ uses **Supabase Auth** with JWT tokens to secure every API request.*
+
+### Flux d'authentification / Authentication Flow
+
+```
+1. Utilisateur se connecte (email/password)
+2. Supabase Auth émet un JWT signé (access_token + refresh_token)
+3. Le client stocke le JWT en mémoire (jamais en localStorage)
+4. Chaque requête API inclut le JWT dans le header Authorization
+5. Supabase vérifie le JWT et applique les politiques RLS
+6. Le token expire après 1h — refresh automatique via refresh_token
+```
+
+### Configuration session / Session Config
+
+| Paramètre | Valeur | Description |
+|-----------|--------|-------------|
+| `JWT expiry` | 3600s (1h) | Durée de vie du token |
+| `Refresh token rotation` | Activé | Nouveau refresh token à chaque usage |
+| `Session persistence` | Mémoire uniquement | Pas de stockage dans localStorage |
+
+---
+
+## Protection des clés API / API Key Protection
+
+<Warning>
+Ne committez **jamais** vos clés API dans le code source. Utilisez toujours des variables d'environnement.
+
+*Never **commit** your API keys in source code. Always use environment variables.*
+</Warning>
+
+| Clé | Stockage recommandé | Exposition |
+|-----|---------------------|------------|
+| `VITE_SUPABASE_ANON_KEY` | `.env.local` | Client (lecture seule) |
+| `SUPABASE_SERVICE_KEY` | Supabase Edge Functions uniquement | Serveur uniquement |
+| `GEMINI_API_KEY` | Supabase Edge Functions uniquement | Serveur uniquement |
+| `SMTP_PASS` | `.env.local` / Edge Functions | Jamais exposée |
+
+---
+
+## Sécurité des Edge Functions / Edge Functions Security
+
+Toutes les Edge Functions (Deno) tournent dans un **sandbox isolé** sur les serveurs Supabase. Les clés sensibles (Gemini, SMTP) ne sont accessibles que via les **Supabase Secrets**.
+
+*All Edge Functions (Deno) run in an **isolated sandbox** on Supabase servers. Sensitive keys (Gemini, SMTP) are only accessible via **Supabase Secrets**.*
+
+```bash
+# Configurer les secrets Supabase (jamais en clair dans le code)
+supabase secrets set GEMINI_API_KEY=your-key
+supabase secrets set SMTP_PASS=your-password
+supabase secrets set SUPABASE_SERVICE_KEY=your-service-key
+```
+
+---
+
+## CORS et Rate Limiting
+
+| Mesure | Configuration |
+|--------|---------------|
+| **CORS** | Origines autorisées limitées au domaine de déploiement Netlify |
+| **Rate Limiting** | 100 requêtes/minute par IP via Supabase |
+| **HTTPS** | Forcé sur toutes les communications (Netlify + Supabase) |
+| **Input Validation** | Validation Zod côté client + contraintes PostgreSQL côté serveur |
+
+---
+
+## Bonnes pratiques / Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Variables d'environnement" icon="lock">
+    Toujours utiliser `.env.local` pour les clés locales et les Supabase Secrets pour les Edge Functions.
+  </Card>
+  <Card title="Principe du moindre privilège" icon="user-shield">
+    Utiliser `ANON_KEY` côté client et `SERVICE_KEY` uniquement dans les fonctions serveur.
+  </Card>
+  <Card title="Rotation des clés" icon="arrows-rotate">
+    Révoquer et regénérer les clés Supabase et Gemini régulièrement ou si compromises.
+  </Card>
+  <Card title="Audit des logs" icon="clipboard-list">
+    Activer les logs Supabase pour surveiller les tentatives d'accès non autorisées.
+  </Card>
+</CardGroup>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Erreur 401 Unauthorized">
+    Le JWT est expiré ou invalide. Vérifiez que la session est active et que le refresh token fonctionne. Reconnectez-vous si nécessaire.
+  </Accordion>
+  <Accordion title="Erreur 403 Forbidden (RLS)">
+    La politique RLS bloque l'accès. Vérifiez que `set_security.sql` a été exécuté et que l'utilisateur est bien le propriétaire de la ressource demandée.
+  </Accordion>
+  <Accordion title="Clé API exposée dans le code">
+    Révoquez immédiatement la clé concernée dans votre dashboard (Supabase, Google AI Studio). Générez une nouvelle clé et mettez à jour vos Supabase Secrets. Supprimez le commit avec `git rebase` ou `BFG Repo Cleaner`.
+  </Accordion>
+</AccordionGroup>
