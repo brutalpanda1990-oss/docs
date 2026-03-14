@@ -1,0 +1,85 @@
+---
+title: Paiements & Taux de Change
+description: Gestion des paiements fournisseurs et conversion des devises dans VesselIQ.
+icon: money-bill-transfer
+---
+
+# Paiements & Taux de Change
+
+VesselIQ offre une gestion complète des flux financiers liés à vos achats navals, incluant le suivi des paiements fournisseurs et la conversion automatique des devises.
+
+## Gestion des paiements
+
+Le service `paymentService.ts` centralise le suivi de tous les paiements effectués ou planifiés dans VesselIQ.
+
+### Statuts de paiement
+
+| Statut | Description |
+|---|---|
+| **En attente** | Paiement créé mais pas encore traité |
+| **En cours** | Virement initialisé auprès de la banque |
+| **Payé** | Paiement confirmé et solde réglé |
+| **Partiel** | Acompte payé, solde restant en attente |
+| **Litié** | Paiement contesté ou bloqué |
+
+### Lier un paiement à un bon de commande
+
+1. Allez dans **Bons de Commande**
+2. Ouvrez le bon concerné
+3. Cliquez sur **Ajouter un paiement**
+4. Renseignez le montant, la date, la référence bancaire
+5. Sélectionnez la devise et validez
+
+<Note>
+  Un bon de commande est automatiquement marqué **Soldé** lorsque la somme des paiements atteint 100% du montant total.
+</Note>
+
+## Taux de change
+
+Le service `exchangeRateService.ts` fournit des taux de change en temps réel pour convertir les montants entre différentes devises.
+
+### Devises supportées
+
+VesselIQ supporte nativement les devises les plus utilisées dans le commerce maritime international :
+
+<CardGroup cols={3}>
+  <Card title="USD" icon="dollar-sign">
+    Dollar américain — devise de référence
+  </Card>
+  <Card title="EUR" icon="euro-sign">
+    Euro — marché européen
+  </Card>
+  <Card title="DZD" icon="coins">
+    Dinar algérien — marché local
+  </Card>
+</CardGroup>
+
+### Conversion automatique
+
+Lorsque vous saisissez un montant dans une devise étrangère, VesselIQ :
+
+1. Récupère le taux de change officiel du jour
+2. Calcule automatiquement l'équivalent en devise de référence
+3. Affiche les deux montants en parallèle
+4. Enregistre le taux utilisé pour traçabilité
+
+<Warning>
+  Les taux de change sont mis à jour quotidiennement. Les montants convertis sont indicatifs et ne constituent pas un engagement contractuel.
+</Warning>
+
+## Rappels de paiement
+
+Le service `reminderService.ts` gère les alertes automatiques pour :
+
+- **Échéances de paiement** : Rappel X jours avant la date limite
+- **LC à présenter** : Alerte sur les documents à soumettre avant expiration
+- **Acomptes à verser** : Notification pour les paiements échelonnés
+
+Les rappels sont envoyés par **email** (via Brevo) et/ou affichés dans le **tableau de bord**.
+
+### Configurer les rappels
+
+1. Allez dans **Paramètres** → **Notifications**
+2. Activez les types de rappels souhaits
+3. Définissez le délai (ex. : 7 jours avant échéance)
+4. Sélectionnez les destinataires
