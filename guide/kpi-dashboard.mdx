@@ -80,3 +80,49 @@ Graphique radar affichant les niveaux de risque sur 6 axes :
   
   *KPIs help identify **problematic trends** before they become critical, optimizing strategic decision-making.*
 </Tip>
+
+---
+
+## Seuils et alertes KPI / KPI Thresholds & Alerts
+
+Le KPIContext surveille en continu les indicateurs et déclenche des alertes visuelles quand un seuil est franchi.
+
+*The KPIContext continuously monitors indicators and triggers visual alerts when a threshold is crossed.*
+
+| Indicateur | Seuil Critique | Seuil Avertissement | Seuil OK |
+|------------|----------------|---------------------|----------|
+| Taux OTD | < 70% | 70% - 85% | > 85% |
+| Taux de réponse fournisseurs | < 50% | 50% - 70% | > 70% |
+| Économies réalisées | < 0% | 0% - 5% | > 5% |
+| Conformité PDR | < 80% | 80% - 92% | > 92% |
+| Cycle Time moyen | > 45 jours | 30 - 45 jours | < 30 jours |
+
+---
+
+## Source des données / Data Source
+
+Le KPI Dashboard est alimenté par le **`KPIContext`** React qui agrège les données depuis :
+- `consultations` et `supplier_offers` (Supabase)
+- `purchase_orders` et `dossiers` (Supabase)
+- Cache local **IndexedDB** pour les calculs historiques
+
+*The KPI Dashboard is powered by the **`KPIContext`** React context that aggregates data from consultations, supplier offers, purchase orders, dossiers (Supabase) and local IndexedDB cache for historical calculations.*
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Les KPIs affichent 0 ou N/A">
+    Vérifiez que des consultations et des bons de commande existent dans la base. Le dashboard nécessite au minimum 1 consultation `closed` pour calculer les métriques.
+  </Accordion>
+  <Accordion title="Le filtrage par navire ne fonctionne pas">
+    Assurez-vous que les consultations sont bien associées à un `vessel_id`. Les consultations sans navire ne sont pas incluses dans les filtres par navire.
+  </Accordion>
+  <Accordion title="L'export Excel est vide">
+    Le dashboard doit avoir chargé des données avant d'exporter. Appliquez d'abord un filtre de période, puis relancez l'export.
+  </Accordion>
+  <Accordion title="Les alertes KPI ne se déclenchent pas">
+    Les alertes sont calculées au chargement de la page. Rechargez le dashboard ou synchronisez les données depuis **Gestion des Données → Sauvegarde**.
+  </Accordion>
+</AccordionGroup>
