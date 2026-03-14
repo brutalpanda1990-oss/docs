@@ -1,0 +1,118 @@
+---
+title: "FAQ / Questions Fréquentes"
+icon: "circle-question"
+description: "Réponses aux questions les plus fréquentes sur VesselIQ"
+---
+
+## Général / General
+
+<AccordionGroup>
+  <Accordion title="VesselIQ fonctionne-t-il sans connexion internet ? / Does VesselIQ work offline?">
+    **Partiellement.** VesselIQ utilise IndexedDB pour stocker les données localement. Vous pouvez consulter et modifier des données déjà chargées sans connexion. Cependant, la synchronisation avec Supabase, l'envoi d'emails et les fonctionnalités IA nécessitent une connexion active.
+
+    *Partially. VesselIQ uses IndexedDB to store data locally. You can view and edit already-loaded data offline. However, Supabase sync, email sending and AI features require an active connection.*
+  </Accordion>
+
+  <Accordion title="Quelles devises sont supportées ? / Which currencies are supported?">
+    VesselIQ supporte toutes les devises principales : **USD, EUR, GBP, DZD, MAD, TND, AED, SAR, JPY, CNY**. La devise est sélectionnable par offre fournisseur et par bon de commande. Les montants sont affichés dans la devise originale sans conversion automatique.
+
+    *VesselIQ supports all major currencies: USD, EUR, GBP, DZD, MAD, TND, AED, SAR, JPY, CNY. Currency is selectable per supplier offer and per purchase order.*
+  </Accordion>
+
+  <Accordion title="Puis-je gérer plusieurs navires ? / Can I manage multiple vessels?">
+    **Oui.** VesselIQ est conçu pour gérer une flotte complète. Chaque consultation, bon de commande et dossier est associé à un navire spécifique. Les KPIs peuvent être filtrés par navire pour une analyse individuelle.
+
+    *Yes. VesselIQ is designed to manage a complete fleet. Each consultation, purchase order and dossier is linked to a specific vessel. KPIs can be filtered by vessel for individual analysis.*
+  </Accordion>
+
+  <Accordion title="Comment obtenir un accès à VesselIQ ? / How to get access to VesselIQ?">
+    VesselIQ est une application **SaaS sur invitation uniquement**. Pour demander un accès, contactez l'équipe via [debbouzamine@gmail.com](mailto:debbouzamine@gmail.com) ou cliquez sur **Demander l'accès** dans la barre de navigation.
+
+    *VesselIQ is an **invite-only SaaS application**. To request access, contact the team at debbouzamine@gmail.com or click **Demander l'accès** in the navigation bar.*
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Consultations & Offres
+
+<AccordionGroup>
+  <Accordion title="Combien de fournisseurs puis-je inviter par consultation ?">
+    Il n'y a **pas de limite** au nombre de fournisseurs par consultation. Vous pouvez envoyer la demande de cotation à autant de fournisseurs que nécessaire. Le comparateur IA peut analyser jusqu'à **10 offres simultanément** dans une matrice de comparaison.
+  </Accordion>
+
+  <Accordion title="Quels formats PDF sont supportés par le comparateur IA ?">
+    Le comparateur IA supporte les PDFs **textuels** (contenant du texte sélectionnable). Les PDFs composés uniquement d'images scannées ne sont pas supportés directement — ils doivent d'abord être convertis via un outil OCR externe.
+
+    Formats supportés : `.pdf` standard, PDFs générés par Excel/Word, factures pro forma numériques.
+  </Accordion>
+
+  <Accordion title="Comment fonctionne le score IA /100 ?">
+    Le score hybride est calculé sur **100 points** :
+    - **60 points techniques** : conformité des références, quantités, spécifications
+    - **40 points financiers** : prix unitaire, montant total, délai de livraison, incoterm
+
+    Les flags `Critical` / `Warning` / `Info` signalent les écarts importants sur chaque ligne analysée.
+  </Accordion>
+
+  <Accordion title="Puis-je modifier une offre manuellement après extraction IA ?">
+    **Oui.** Après l'extraction automatique, chaque champ est éditable. Vous pouvez corriger les valeurs, ajouter des lignes manquantes ou ajuster le score manuellement avant de sélectionner l'offre gagnante.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Lettres de Crédit & Finance
+
+<AccordionGroup>
+  <Accordion title="VesselIQ est-il conforme UCP 600 ?">
+    Le module LC de VesselIQ est conçu en référence aux **règles UCP 600** de la Chambre de Commerce Internationale. Le wizard guide la saisie des clauses standard et signale les incohérences. Cependant, la validation finale reste sous la responsabilité des équipes bancaires et juridiques.
+  </Accordion>
+
+  <Accordion title="Puis-je générer un message SWIFT MT700 ?">
+    VesselIQ génère un **preview du format SWIFT MT700** basé sur les données saisies. Ce prévisualisation est destinée à la vérification avant transmission à la banque émettrice. L'envoi direct SWIFT n'est pas supporté.
+  </Accordion>
+
+  <Accordion title="La domiciliation bancaire algérienne est-elle gérée ?">
+    **Oui.** L'étape 7 du suivi des dossiers est dédiée à la **domiciliation bancaire** (procédure réglementaire algérienne). Elle inclut les champs numéro de domiciliation, banque domiciliataire, et date de dépôt du dossier.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Technique & Sécurité
+
+<AccordionGroup>
+  <Accordion title="Mes données sont-elles sécurisées ?">
+    Oui. VesselIQ utilise :
+    - **Row Level Security (RLS)** Supabase — vous n'accédez qu'à vos propres données
+    - **JWT** pour l'authentification avec expiration automatique
+    - **HTTPS** forcé sur toutes les communications
+    - Clés API stockées dans des **Supabase Secrets** isolés
+
+    Consultez la [page Sécurité](/architecture/security) pour plus de détails.
+  </Accordion>
+
+  <Accordion title="Puis-je exporter toutes mes données ?">
+    **Oui.** Depuis **Gestion des Données**, vous pouvez :
+    - Exporter en **Excel multi-onglets** (consultations, fournisseurs, BC)
+    - Télécharger une **sauvegarde JSON** complète de la base locale
+    - Générer des **rapports PDF** depuis le KPI Dashboard
+  </Accordion>
+
+  <Accordion title="Quels navigateurs sont supportés ?">
+    VesselIQ est optimisé pour les navigateurs modernes :
+    - **Chrome 110+** (recommandé)
+    - **Firefox 110+**
+    - **Edge 110+**
+    - **Safari 16+**
+
+    L'application n'est pas optimisée pour les appareils mobiles (interface bureau uniquement).
+  </Accordion>
+
+  <Accordion title="Comment contacter le support ?">
+    Pour toute question technique ou demande d'accès, contactez :
+    - **Email** : [debbouzamine@gmail.com](mailto:debbouzamine@gmail.com)
+    - **LinkedIn** : [Amine Debbouz](https://www.linkedin.com/in/debbouzamine/)
+  </Accordion>
+</AccordionGroup>
