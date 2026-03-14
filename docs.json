@@ -69,7 +69,15 @@
             "pages": [
               "architecture/tech-stack",
               "architecture/edge-functions",
-              "architecture/data-types"
+              "architecture/data-types",
+              "architecture/database",
+              "architecture/security"
+            ]
+          },
+          {
+            "group": "Historique",
+            "pages": [
+              "changelog"
             ]
           }
         ]
@@ -109,7 +117,7 @@
   },
   "footer": {
     "socials": {
-      "linkedin": "https://www.linkedin.com"
+      "linkedin": "https://www.linkedin.com/in/amine-debbouz"
     }
   }
 }
