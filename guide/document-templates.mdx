@@ -1,0 +1,80 @@
+---
+title: Templates de Documents
+description: Génération et gestion des templates DOCX/PDF pour bons de commande, lettres de crédit et rapports dans VesselIQ.
+icon: file-word
+---
+
+# Templates de Documents
+
+VesselIQ permet de générer automatiquement des documents professionnels (bons de commande, lettres de crédit, rapports) à partir de templates prédéfinis ou personnalisés, grâce au service `templateService.ts`.
+
+## Types de documents générés
+
+<CardGroup cols={2}>
+  <Card title="Bon de commande" icon="file-invoice">
+    Génération automatique en DOCX/PDF avec articles, prix, fournisseur et conditions de livraison
+  </Card>
+  <Card title="Lettre de crédit" icon="file-contract">
+    Document LC conforme UCP 600 avec toutes les conditions bancaires renseignées
+  </Card>
+  <Card title="Rapport de consultation" icon="file-chart-column">
+    Synthèse comparative de toutes les offres reçues pour une consultation
+  </Card>
+  <Card title="Fiche fournisseur" icon="address-card">
+    Fiche détaillée du fournisseur avec historique et score de performance
+  </Card>
+</CardGroup>
+
+## Générer un document
+
+### Depuis un bon de commande
+
+1. Ouvrez le bon de commande concerné
+2. Cliquez sur le bouton **Télécharger** ou **Imprimer**
+3. Sélectionnez le format : **DOCX** ou **PDF**
+4. Le document est généré instantanément et téléchargé
+
+### Depuis une lettre de crédit
+
+1. Ouvrez la LC concernée
+2. Cliquez sur **Exporter LC**
+3. Le template UCP 600 est rempli automatiquement avec les données de la LC
+
+## Variables de template
+
+Les templates utilisent des **variables dynamiques** qui sont substituées automatiquement lors de la génération :
+
+| Variable | Description |
+|---|---|
+| `{{navire}}` | Nom du navire concerné |
+| `{{fournisseur}}` | Nom et adresse du fournisseur |
+| `{{articles}}` | Liste détaillée des articles commandés |
+| `{{montant_total}}` | Montant total avec devise |
+| `{{date_livraison}}` | Date de livraison prévue |
+| `{{port}}` | Port de livraison |
+| `{{conditions_paiement}}` | Conditions de règlement |
+| `{{reference_lc}}` | Référence de la lettre de crédit liée |
+
+## Personnaliser un template
+
+Vous pouvez modifier les templates par défaut pour les adapter à votre société :
+
+1. Allez dans **Paramètres** → **Templates de documents**
+2. Cliquez sur le template à modifier
+3. Téléchargez le fichier DOCX de base
+4. Modifiez le design (logo, en-tête, mise en page) en conservant les variables `{{...}}`
+5. Réimportez le fichier modifié
+
+<Warning>
+  Ne supprimez pas les variables `{{...}}` lors de la personnalisation, elles sont nécessaires pour l'injection automatique des données.
+</Warning>
+
+## Formats d'export disponibles
+
+- **DOCX** : Document Word éditable (idéal pour modifications manuelles avant envoi)
+- **PDF** : Document verrouillé (idéal pour envoi officiel et archivage)
+- **Excel** : Pour les rapports de comparaison d'offres et les KPI
+
+<Note>
+  L'export Excel des consultations et KPI est géré séparément par les services `consultationExcelService.ts` et `kpiExcelExportService.ts`.
+</Note>
