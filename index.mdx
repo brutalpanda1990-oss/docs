@@ -3,6 +3,10 @@ title: "Introduction"
 description: "Bienvenue sur la documentation VesselIQ — votre plateforme d'intelligence maritime"
 ---
 
+<Note>
+**v3.14** — Dernière version stable. [Voir le Changelog →](/changelog)
+</Note>
+
 ## Bienvenue sur VesselIQ
 
 **VesselIQ** est une plateforme d'intelligence maritime conçue pour optimiser l'ensemble du processus d'approvisionnement des navires. De la consultation fournisseur à la gestion des lettres de crédit, VesselIQ intègre l'intelligence artificielle pour automatiser et fiabiliser chaque étape.
@@ -46,6 +50,15 @@ VesselIQ est développé par **DEBBOUZ Amine — PARADOOX** et utilise l'IA Gemi
   <Card title="Navires" icon="ship" href="/guide/ship-management">
     Gestion de la flotte : fiches navire, spécifications, maintenance.
   </Card>
+  <Card title="KPI Dashboard" icon="chart-bar" href="/guide/kpi-dashboard">
+    8 modules analytiques : OTD, coûts, conformité, radar de risque.
+  </Card>
+  <Card title="Gestion des Données" icon="database" href="/guide/data-management">
+    Import/export Excel, templates DOCX, sauvegarde et réinitialisation.
+  </Card>
+  <Card title="FAQ" icon="circle-question" href="/guide/faq">
+    Réponses aux questions fréquentes sur VesselIQ.
+  </Card>
 </Columns>
 
 ## Intelligence Artificielle
@@ -62,12 +75,47 @@ VesselIQ est développé par **DEBBOUZ Amine — PARADOOX** et utilise l'IA Gemi
   </Card>
 </Columns>
 
+## Architecture & Technique
+
+<Columns cols={3}>
+  <Card title="Base de Données" icon="database" href="/architecture/database">
+    Schéma des tables Supabase, relations et stockage IndexedDB.
+  </Card>
+  <Card title="Sécurité" icon="shield-check" href="/architecture/security">
+    RLS, JWT, protection des clés API et bonnes pratiques.
+  </Card>
+  <Card title="Changelog" icon="clock-rotate-left" href="/changelog">
+    Historique des versions : v3.14, v3.13, v3.12 et roadmap.
+  </Card>
+</Columns>
+
 ---
 
 ## Welcome to VesselIQ
 
 **VesselIQ** is a maritime intelligence platform designed to optimize the entire vessel supply chain process. From supplier consultations to letter of credit management, VesselIQ integrates artificial intelligence to automate and ensure accuracy at every step.
 
-<Card title="Quick Start" icon="rocket" href="/quickstart" horizontal>
+<Columns cols={3}>
+  <Card title="Dashboard" icon="chart-line" href="/guide/dashboard">
+    Overview: KPIs, charts, deadline calendar and activity timeline.
+  </Card>
+  <Card title="Consultations" icon="file-signature" href="/guide/consultations">
+    Full cycle management: Draft → Active → With Offers → Closed.
+  </Card>
+  <Card title="AI Comparator" icon="robot" href="/guide/offer-comparison">
+    AI extraction of PDF offers, multicriteria matrix and intelligent scoring.
+  </Card>
+  <Card title="Dossier Tracking" icon="timeline" href="/guide/dossier-tracking">
+    Logistic tracking with milestones and delivery statuses.
+  </Card>
+  <Card title="Purchase Orders" icon="file-invoice" href="/guide/purchase-orders">
+    Create, generate DOCX and track purchase orders.
+  </Card>
+  <Card title="Letters of Credit" icon="landmark" href="/guide/letters-of-credit">
+    Full UCP 600 compliant LC wizard, SWIFT preview and reports.
+  </Card>
+</Columns>
+
+<Card title="Quick Start" icon="rocket" href="/quickstart">
   Get started in 3 minutes — install, configure, and launch VesselIQ.
 </Card>
