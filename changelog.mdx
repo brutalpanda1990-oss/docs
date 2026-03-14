@@ -1,0 +1,108 @@
+---
+title: "Changelog / Release Notes"
+icon: "clock-rotate-left"
+description: "Historique des versions et évolutions de VesselIQ"
+---
+
+<Info>
+VesselIQ suit un versionnage sémantique : **MAJEUR.MINEUR.PATCH** (ex: 3.14.0).
+
+*VesselIQ follows semantic versioning: **MAJOR.MINOR.PATCH** (e.g., 3.14.0).*
+</Info>
+
+---
+
+## v3.14 — Mars 2026
+
+### Nouvelles fonctionnalités / New Features
+
+- **Lettres de Crédit (LC)** — Wizard UCP 600 complet, preview SWIFT MT700, contrôle de conformité automatique
+- **Comparateur IA v2** — Matching en 4 passes (exact → normalisé → sémantique → IA), scoring hybride 100pts (60 technique + 40 financier)
+- **Flags de risque IA** — Trois niveaux : `Critical` / `Warning` / `Info` sur chaque ligne d'offre analysée
+- **Suivi des Dossiers v2** — 9 étapes détaillées avec suivi automatique et manuel, métadonnées JSONB par étape
+- **Screenshots documentation** — Captures d'écran intégrées dans les pages LC, Dossier Tracking, KPI
+
+### Améliorations / Improvements
+
+- Performance IndexedDB — réduction du temps de chargement des offres volumineuses de **40%**
+- Export Excel multi-onglets amélioré avec formatage conditionnel
+- Navigation Mintlify mise à jour avec section **Architecture** étendue
+- Favicon et logo mis à jour
+
+### Corrections / Bug Fixes
+
+- Correction du doublon de titres dans les pages MDX
+- Correction des liens brisés dans la section screenshots
+- Fix du déploiement des Edge Functions sur Supabase staging
+
+---
+
+## v3.13 — Février 2026
+
+### Nouvelles fonctionnalités / New Features
+
+- **KPI Dashboard** — 8 modules analytiques : OTD, coûts, conformité PDR, radar de risque, cycle time, performance fournisseurs
+- **Gestion des Navires** — Fiches navires complètes avec numéro IMO, spécifications techniques, suivi maintenance
+- **Email Sync (IMAP)** — Synchronisation automatique des réponses fournisseurs par email
+- **Edge Function `email-sync`** — Traitement asynchrone des emails entrants
+
+### Améliorations / Improvements
+
+- Contextes React refactorisés : `DataContext`, `ThemeContext`, `StatusContext`, `KPIContext`
+- Ajout du runtime **Deno** pour toutes les Edge Functions
+- Amélioration du score IA avec pondération configurable
+
+### Corrections / Bug Fixes
+
+- Fix du rechargement des données IndexedDB après navigation
+- Correction de l'affichage des devises (DZD, EUR, USD)
+
+---
+
+## v3.12 — Janvier 2026
+
+### Nouvelles fonctionnalités / New Features
+
+- **Bons de Commande (BC)** — Génération automatique depuis les offres sélectionnées
+- **Templates DOCX** — Génération de documents Word avec variables dynamiques (Docxtemplater)
+- **Gestion des Données** — Import/export Excel, sauvegarde JSON, réinitialisation
+- **Edge Function `verify-email`** — Validation des adresses email fournisseurs
+
+### Améliorations / Improvements
+
+- Migration vers **React 19** et **Vite 6**
+- Intégration **Prisma ORM** pour les migrations de schéma
+- Amélioration des animations Framer Motion
+
+---
+
+## v3.0 — Novembre 2025
+
+### Refonte majeure / Major Rewrite
+
+- Migration complète vers **TypeScript**
+- Adoption de **Supabase** comme backend principal (remplacement Firebase)
+- Intégration initiale de l'IA **Gemini** pour la comparaison des offres
+- Lancement de la documentation **Mintlify**
+- Architecture SaaS sur invitation
+
+---
+
+## Versions antérieures / Earlier Versions
+
+Les versions antérieures à v3.0 étaient des prototypes internes non documentés publiquement.
+
+*Versions before v3.0 were internal prototypes not publicly documented.*
+
+---
+
+## Feuille de route / Roadmap
+
+<CardGroup cols={2}>
+  <Card title="v3.15 — Prévu" icon="road">
+    Module de réclamations fournisseurs, intégration Incoterms automatique, notifications push
+  </Card>
+  <Card title="v4.0 — Long terme" icon="rocket">
+    Multi-tenant SaaS, tableau de bord flotte multi-compagnies, API publique REST
+  </Card>
+</CardGroup>
