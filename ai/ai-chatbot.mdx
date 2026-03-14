@@ -52,3 +52,115 @@ L'assistant peut analyser :
   
   *The AI assistant reduces the app's **learning curve** by guiding users step-by-step through complex processes like letters of credit.*
 </Tip>
+
+---
+
+## Exemples de prompts / Prompt Examples
+
+Voici des exemples concrets de questions à poser à l'assistant pour les cas d'usage maritimes les plus courants.
+
+*Here are concrete examples of questions to ask the assistant for the most common maritime use cases.*
+
+### Consultations & Offres
+
+<CodeGroup>
+```text Analyse d'offres
+"Compare les offres reçues pour la consultation CONS-2024-015. Quelle est la meilleure offre qualité/prix ?"
+
+"Quels fournisseurs n'ont pas encore répondu à ma dernière consultation ?"
+
+"Quel est le délai moyen de réponse de mes fournisseurs ce trimestre ?"
+```
+
+```text Gestion des prix
+"Sur la consultation CONS-2024-010, quelle offre a le meilleur prix pour la référence MAN-B&W-123456 ?"
+
+"Calcule les économies réalisées sur mes 5 dernières commandes comparé au budget estimé."
+```
+</CodeGroup>
+
+### Fournisseurs
+
+<CodeGroup>
+```text Performance fournisseurs
+"Quel est le taux de conformité du fournisseur Marine Parts Co. sur les 6 derniers mois ?"
+
+"Liste les fournisseurs avec un délai de livraison moyen supérieur à 30 jours."
+
+"Quel fournisseur a le meilleur score global pour les pièces moteur ?"
+```
+
+```text Recherche fournisseurs
+"Trouve des fournisseurs spécialisés en pièces de rechange pour moteurs MAN B&W en Europe."
+
+"Y a-t-il des fournisseurs algériens dans ma base pour les équipements de pont ?"
+```
+</CodeGroup>
+
+### Lettres de Crédit
+
+<CodeGroup>
+```text Conformité UCP 600
+"Analyse ma lettre de crédit LC-2024-003. Y a-t-il des clauses non conformes UCP 600 ?"
+
+"Quelle est la date d'expiration de ma LC pour la commande BC-2024-007 ?"
+
+"Explique-moi l'article 14 de l'UCP 600 concernant la conformité des documents."
+```
+</CodeGroup>
+
+### KPI & Analytique
+
+<CodeGroup>
+```text Analyse de performance
+"Quel est mon taux OTD (On-Time Delivery) ce trimestre par navire ?"
+
+"Montre-moi l'évolution de mes dépenses en USD sur les 3 derniers mois."
+
+"Quels sont les 3 principaux risques identifiés dans mon radar de risque actuel ?"
+
+"Quel module de VesselIQ utilise le plus de ressources serveur ?"
+```
+</CodeGroup>
+
+### Assistance opérationnelle
+
+<CodeGroup>
+```text Aide à la navigation
+"Comment créer une nouvelle consultation pour le navire MV Atlantic Star ?"
+
+"Quelles étapes me manquent pour clôturer le dossier DOS-2024-022 ?"
+
+"Comment exporter mes données fournisseurs en Excel ?"
+```
+</CodeGroup>
+
+---
+
+## Limites / Limitations
+
+<Warning>
+L'assistant IA ne peut pas :
+- **Envoyer des emails** directement (utiliser le module Messagerie)
+- **Modifier des données** dans la base (lecture seule)
+- **Accéder à des informations externes** en temps réel (cours des matières premières, taux de change live)
+- **Générer des documents** DOCX ou PDF (utiliser les modules BC/LC)
+
+*The AI assistant cannot: send emails directly, modify database records, access real-time external data, or generate DOCX/PDF documents.*
+</Warning>
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="L'assistant ne répond pas ou affiche une erreur">
+    Vérifiez que la clé `GEMINI_API_KEY` est correctement configurée dans vos Supabase Secrets. Le quota Gemini gratuit est de 60 requêtes/minute — en cas de dépassement, attendez 60 secondes avant de réessayer.
+  </Accordion>
+  <Accordion title="Les réponses semblent incomplètes ou inexactes">
+    L'assistant se base sur les données présentes dans votre base. Si les données sont incomplètes ou non synchronisées avec Supabase, les réponses seront limitées. Lancez une synchronisation depuis **Gestion des Données** et réessayez.
+  </Accordion>
+  <Accordion title="L'historique de conversation est perdu après rechargement">
+    L'historique de conversation est stocké en mémoire de session et non persisté en base. Chaque nouvelle session repart d'une conversation vide — c'est un comportement normal.
+  </Accordion>
+</AccordionGroup>
