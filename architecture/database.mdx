@@ -1,0 +1,202 @@
+---
+title: "Base de Données / Database Schema"
+icon: "database"
+description: "Schéma complet des tables Supabase et relations entre entités de VesselIQ"
+---
+
+## Vue d'ensemble / Overview
+
+VesselIQ utilise **Supabase (PostgreSQL)** comme base de données principale, complété par **IndexedDB** pour le stockage local des données volumineuses avec synchronisation cloud.
+
+*VesselIQ uses **Supabase (PostgreSQL)** as the main database, complemented by **IndexedDB** for local storage of large datasets with cloud synchronization.*
+
+---
+
+## Tables principales / Main Tables
+
+### `consultations`
+Gestion du cycle d'approvisionnement central.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `reference` | `text` | Référence consultation (ex: CONS-2024-001) |
+| `vessel_id` | `uuid` | FK → `vessels` |
+| `status` | `text` | `draft` \| `active` \| `comparison` \| `ordered` \| `closed` |
+| `title` | `text` | Titre de la consultation |
+| `deadline` | `timestamp` | Date limite réponse fournisseur |
+| `budget_estimate` | `numeric` | Budget estimé (USD) |
+| `created_by` | `uuid` | FK → `auth.users` |
+| `created_at` | `timestamp` | Date de création |
+| `updated_at` | `timestamp` | Dernière modification |
+
+### `consultation_items`
+Lignes de pièces ou services demandés dans une consultation.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `consultation_id` | `uuid` | FK → `consultations` |
+| `part_number` | `text` | Référence pièce |
+| `description` | `text` | Désignation |
+| `quantity` | `numeric` | Quantité demandée |
+| `unit` | `text` | Unité de mesure |
+| `estimated_price` | `numeric` | Prix unitaire estimé |
+
+### `suppliers`
+Répertoire des fournisseurs maritimes.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `name` | `text` | Nom du fournisseur |
+| `country` | `text` | Pays |
+| `email` | `text` | Email principal |
+| `phone` | `text` | Téléphone |
+| `categories` | `text[]` | Catégories de pièces |
+| `rating` | `numeric` | Score moyen (0-5) |
+| `is_active` | `boolean` | Statut actif |
+| `created_at` | `timestamp` | Date d'ajout |
+
+### `supplier_offers`
+Offres reçues des fournisseurs en réponse aux consultations.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `consultation_id` | `uuid` | FK → `consultations` |
+| `supplier_id` | `uuid` | FK → `suppliers` |
+| `status` | `text` | `pending` \| `received` \| `analyzed` \| `selected` \| `rejected` |
+| `total_amount` | `numeric` | Montant total offre |
+| `currency` | `text` | Devise (USD, EUR, DZD...) |
+| `lead_time_days` | `integer` | Délai livraison (jours) |
+| `ai_score` | `numeric` | Score IA hybride /100 |
+| `incoterm` | `text` | Incoterm (FOB, CIF, DDP...) |
+| `received_at` | `timestamp` | Date réception offre |
+
+### `purchase_orders`
+Bons de commande générés suite à une consultation.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `po_number` | `text` | Numéro BC (ex: BC-2024-001) |
+| `consultation_id` | `uuid` | FK → `consultations` |
+| `supplier_id` | `uuid` | FK → `suppliers` |
+| `vessel_id` | `uuid` | FK → `vessels` |
+| `status` | `text` | `draft` \| `sent` \| `confirmed` \| `delivered` \| `closed` |
+| `total_amount` | `numeric` | Montant total |
+| `currency` | `text` | Devise |
+| `delivery_date` | `date` | Date livraison prévue |
+| `created_at` | `timestamp` | Date création |
+
+### `vessels`
+Fiches navires de la flotte.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `name` | `text` | Nom du navire |
+| `imo_number` | `text` | Numéro IMO |
+| `vessel_type` | `text` | Type (cargo, tanker, ferry...) |
+| `flag` | `text` | Pavillon |
+| `gross_tonnage` | `numeric` | Jauge brute |
+| `year_built` | `integer` | Année de construction |
+| `is_active` | `boolean` | Statut actif |
+
+### `dossiers`
+Dossiers de suivi logistique post-commande.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `po_id` | `uuid` | FK → `purchase_orders` |
+| `current_step` | `integer` | Étape actuelle (1-9) |
+| `status` | `text` | `in_progress` \| `blocked` \| `completed` |
+| `tracking_metadata` | `jsonb` | Métadonnées par étape |
+| `updated_at` | `timestamp` | Dernière mise à jour |
+
+### `letters_of_credit`
+Lettres de crédit UCP 600.
+
+| Colonne | Type | Description |
+|---------|------|-------------|
+| `id` | `uuid` | Identifiant unique |
+| `po_id` | `uuid` | FK → `purchase_orders` |
+| `lc_number` | `text` | Numéro LC |
+| `issuing_bank` | `text` | Banque émettrice |
+| `amount` | `numeric` | Montant LC |
+| `currency` | `text` | Devise |
+| `expiry_date` | `date` | Date d'expiration |
+| `status` | `text` | `draft` \| `issued` \| `presented` \| `paid` \| `expired` |
+| `ucp_compliant` | `boolean` | Conformité UCP 600 |
+
+---
+
+## Diagramme de relations / Entity Relations
+
+```
+auth.users
+    └── consultations
+            ├── consultation_items
+            └── supplier_offers ─── suppliers
+                    └── purchase_orders
+                                ├── vessels
+                                ├── dossiers
+                                └── letters_of_credit
+```
+
+---
+
+## Stockage local / Local Storage (IndexedDB)
+
+Les données volumineuses (offres PDF, pièces jointes, historique) sont stockées localement via **IndexedDB** pour optimiser les performances, puis synchronisées avec Supabase.
+
+*Large data (PDF offers, attachments, history) is stored locally via **IndexedDB** to optimize performance, then synchronized with Supabase.*
+
+| Store IndexedDB | Contenu | Sync |
+|-----------------|---------|------|
+| `offers_cache` | Offres PDF analysées | Oui |
+| `ai_results` | Résultats comparaisons IA | Oui |
+| `email_queue` | Emails en attente d'envoi | Oui |
+| `local_drafts` | Brouillons non soumis | Non |
+
+---
+
+## Ordre d'exécution SQL / SQL Execution Order
+
+<Warning>
+Exécutez les scripts dans cet ordre pour éviter les erreurs de clés étrangères.
+
+*Execute scripts in this order to avoid foreign key errors.*
+</Warning>
+
+```sql
+-- 1. Schéma principal (tables, relations, indexes)
+npm run db:init  -- ou exécuter init_database.sql dans Supabase SQL Editor
+
+-- 2. Schéma email
+email_schema.sql
+
+-- 3. Configuration SMTP
+smtp_schema.sql
+
+-- 4. Politiques de sécurité RLS
+set_security.sql
+```
+
+---
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Erreur: relation does not exist">
+    Vérifiez que les scripts SQL ont été exécutés dans le bon ordre. Consultez l'onglet **Table Editor** dans votre dashboard Supabase pour confirmer la création des tables.
+  </Accordion>
+  <Accordion title="Données manquantes après rechargement">
+    VesselIQ utilise IndexedDB comme cache local. Si les données semblent absentes, allez dans **Gestion des Données → Sauvegarde** et lancez une synchronisation manuelle avec Supabase.
+  </Accordion>
+  <Accordion title="Erreur de synchronisation cloud">
+    Vérifiez que `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` sont correctement configurés. Assurez-vous que les politiques RLS autorisent l'utilisateur connecté.
+  </Accordion>
+</AccordionGroup>
